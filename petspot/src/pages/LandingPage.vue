@@ -74,8 +74,14 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </h2>
         </div>
         <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+          <div
+            class="card d-flex align-items-center justify-content-center gap-2"
+          >
+            <img
+              src="../assets/images/Agendamento de consultas.svg"
+              class="card-img-top m-3"
+              alt="..."
+            />
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">
                 Agendamento de consultas
@@ -88,8 +94,14 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
         </div>
         <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+          <div
+            class="card d-flex align-items-center justify-content-center gap-2"
+          >
+            <img
+              src="../assets/images/Carteira de Vacinação.svg"
+              class="card-img-top m-3"
+              alt="..."
+            />
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">
                 Carteirinha de vacinação
@@ -101,8 +113,14 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
         </div>
         <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+          <div
+            class="card d-flex align-items-center justify-content-center gap-2"
+          >
+            <img
+              src="../assets/images/Prontuários.svg"
+              class="card-img-top m-3"
+              alt="..."
+            />
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">
                 Consulta à prontuários
@@ -115,8 +133,14 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
         </div>
         <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+          <div
+            class="card d-flex align-items-center justify-content-center gap-2"
+          >
+            <img
+              src="../assets/images/Converse com Veterinários.svg"
+              class="card-img-top m-3"
+              alt="..."
+            />
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">
                 Converse facilmente com veterinários
@@ -129,8 +153,14 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
         </div>
         <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+          <div
+            class="card d-flex align-items-center justify-content-center gap-2"
+          >
+            <img
+              src="../assets/images/Cadastre seu pet.svg"
+              class="card-img-top m-3"
+              alt="..."
+            />
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">Cadastre Seu Pet</h5>
               <p class="card-text">
@@ -167,6 +197,16 @@ hr#services-underline {
 }
 
 .card {
+  height: 20rem;
+}
+.card-img-top {
   aspect-ratio: 1;
+  height: 5rem;
+  width: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: var(--brand-color);
 }
 </style>
