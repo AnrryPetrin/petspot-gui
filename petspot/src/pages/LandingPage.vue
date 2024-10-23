@@ -134,7 +134,8 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
             <div class="card-body">
               <h5 class="card-title fs-4 fw-semibold">Cadastre Seu Pet</h5>
               <p class="card-text">
-                Centralize todas as informações do seu pet de forma organizada em um só local.
+                Centralize todas as informações do seu pet de forma organizada
+                em um só local.
               </p>
             </div>
           </div>
@@ -163,5 +164,9 @@ hr#services-underline {
   margin: 0.5rem 0 !important; /* Espaçamento vertical */
   border-top: 0.15rem solid var(--brand-color) !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08) !important; /* Sombra suave */
+}
+
+.card {
+  aspect-ratio: 1;
 }
 </style>
