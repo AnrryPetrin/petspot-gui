@@ -207,6 +207,5 @@ hr#services-underline {
   align-items: center;
   justify-content: center;
   display: flex;
-  color: var(--brand-color);
 }
 </style>

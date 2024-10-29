@@ -26,9 +26,7 @@ onBeforeUnmount(() => {
       class="navbar-nav me-lg-auto ms-lg-auto d-flex flex-row align-items-center justify-content-center gap-4"
     >
       <li class="nav-item text-nowrap">
-        <router-link class="nav-link" :to="{ name: 'our-services-page' }"
-          >Nossos Serviços</router-link
-        >
+        <a class="nav-link" href="#services-title">Nossos Serviços</a>
       </li>
       <li class="nav-item text-nowrap">
         <router-link class="nav-link" :to="{ name: 'about-us-page' }"
@@ -76,10 +74,9 @@ onBeforeUnmount(() => {
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav d-flex flex-column gap-4">
+            <!-- Não esquecer de atualizar esta lista para ser igual ao MD Device -->
             <li class="nav-item text-nowrap">
-              <router-link class="nav-link" :to="{ name: 'our-services-page' }"
-                >Nossos Serviços</router-link
-              >
+              <a class="nav-link" href="#services-title">Nossos Serviços</a>
             </li>
             <li class="nav-item text-nowrap">
               <router-link class="nav-link" :to="{ name: 'about-us-page' }"
@@ -92,9 +89,7 @@ onBeforeUnmount(() => {
               >
             </li>
             <li class="nav-item text-nowrap">
-              <router-link class="nav-link" :to="{ name: 'contact-us-page' }"
-                >Fale conosco</router-link
-              >
+              <a class="nav-link">Fale conosco</a>
             </li>
           </ul>
         </div>
