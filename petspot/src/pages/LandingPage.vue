@@ -70,137 +70,200 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
         >
           <h2 id="services-title" class="fw-bold">
             Serviços
-            <hr id="services-underline" />
+            <hr class="underline-title" />
           </h2>
         </div>
-        <div class="col">
-          <div
-            class="card d-flex align-items-center justify-content-center gap-2"
-          >
-            <img
-              src="../assets/images/Agendamento de consultas.svg"
-              class="card-img-top m-3"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title fs-4 fw-semibold">
-                Agendamento de consultas
-              </h5>
-              <p class="card-text fs-6">
-                Organize consultas e mantenha tudo sob controle de forma
-                prática.
-              </p>
+        <div
+          class="row d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
+        >
+          <div class="col">
+            <div
+              class="card d-flex align-items-center justify-content-center gap-2"
+            >
+              <img
+                src="../assets/images/Agendamento de consultas.svg"
+                class="card-img-top m-3"
+                alt="..."
+              />
+              <div class="card-body text-center p-2">
+                <h5 class="card-title fs-4 fw-semibold">
+                  Agendamento de consultas
+                </h5>
+                <p class="card-text fs-6">
+                  Organize consultas e mantenha tudo sob controle de forma
+                  prática.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div
-            class="card d-flex align-items-center justify-content-center gap-2"
-          >
-            <img
-              src="../assets/images/Carteira de Vacinação.svg"
-              class="card-img-top m-3"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title fs-4 fw-semibold">
-                Carteirinha de vacinação
-              </h5>
-              <p class="card-text">
-                Acompanhe e atualize as vacinas do seu pet de forma digital.
-              </p>
+          <div class="col">
+            <div
+              class="card d-flex align-items-center justify-content-center gap-2"
+            >
+              <img
+                src="../assets/images/Carteira de Vacinação.svg"
+                class="card-img-top m-3"
+                alt="..."
+              />
+              <div class="card-body text-center p-2">
+                <h5 class="card-title fs-4 fw-semibold">
+                  Carteirinha de vacinação
+                </h5>
+                <p class="card-text">
+                  Acompanhe e atualize as vacinas do seu pet de forma digital.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div
-            class="card d-flex align-items-center justify-content-center gap-2"
-          >
-            <img
-              src="../assets/images/Prontuários.svg"
-              class="card-img-top m-3"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title fs-4 fw-semibold">
-                Consulta à prontuários
-              </h5>
-              <p class="card-text">
-                Acesse o histórico médico completo do seu pet com apenas alguns
-                cliques.
-              </p>
+          <div class="col">
+            <div
+              class="card d-flex align-items-center justify-content-center gap-2"
+            >
+              <img
+                src="../assets/images/Prontuários.svg"
+                class="card-img-top m-3"
+                alt="..."
+              />
+              <div class="card-body text-center p-2">
+                <h5 class="card-title fs-4 fw-semibold">
+                  Consulta à prontuários
+                </h5>
+                <p class="card-text">
+                  Acesse o histórico médico completo do seu pet com apenas
+                  alguns cliques.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div
-            class="card d-flex align-items-center justify-content-center gap-2"
-          >
-            <img
-              src="../assets/images/Converse com Veterinários.svg"
-              class="card-img-top m-3"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title fs-4 fw-semibold">
-                Converse facilmente com veterinários
-              </h5>
-              <p class="card-text">
-                Tire dúvidas e receba orientações diretamente dos veterinários
-                do seu Pet.
-              </p>
+          <div class="col">
+            <div
+              class="card d-flex align-items-center justify-content-center gap-2"
+            >
+              <img
+                src="../assets/images/Converse com Veterinários.svg"
+                class="card-img-top m-3"
+                alt="..."
+              />
+              <div class="card-body text-center p-2">
+                <h5 class="card-title fs-4 fw-semibold">
+                  Converse facilmente com veterinários
+                </h5>
+                <p class="card-text">
+                  Tire dúvidas e receba orientações diretamente dos veterinários
+                  do seu Pet.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div
-            class="card d-flex align-items-center justify-content-center gap-2"
-          >
-            <img
-              src="../assets/images/Cadastre seu pet.svg"
-              class="card-img-top m-3"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title fs-4 fw-semibold">Cadastre Seu Pet</h5>
-              <p class="card-text">
-                Centralize todas as informações do seu pet de forma organizada
-                em um só local.
-              </p>
+          <div class="col">
+            <div
+              class="card d-flex align-items-center justify-content-center gap-2"
+            >
+              <img
+                src="../assets/images/Cadastre seu pet.svg"
+                class="card-img-top m-3"
+                alt="..."
+              />
+              <div class="card-body text-center p-2">
+                <h5 class="card-title fs-4 fw-semibold">Cadastre Seu Pet</h5>
+                <p class="card-text">
+                  Centralize todas as informações do seu pet de forma organizada
+                  em um só local.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <section id="about-us-section">
+  <section id="about-us-section" class="p-5 bg-light">
     <div class="container">
       <div
-        class="row d-flex flex-column-reverse flex-md-column-reverse flex-lg-column-reverse flex-xl-row justify-content-between align-items-center"
+        class="row d-flex justify-content-start align-items-center text-start"
       >
         <div
           class="col-12 d-flex justify-content-start align-items-center mb-3"
         >
-          <h2 id="about-us-title" class="fw-bold">
+          <h2 id="services-title" class="fw-bold">
             Sobre Nós
-            <hr id="about-us-underline" />
+            <hr class="underline-title" />
           </h2>
+        </div>
+        <div class="col-12 col-md-10 col-lg-8">
+          <p class="fs-5">
+            No PetSpot, acreditamos que o cuidado com os pets vai além de
+            consultas veterinárias. Nossa plataforma foi criada para facilitar o
+            acesso a informações essenciais, conectando tutores e veterinários
+            em um ambiente seguro e eficiente. Trabalhamos com dedicação para
+            oferecer uma experiência intuitiva e prática, ajudando tutores a
+            manterem a saúde e o bem-estar de seus pets em dia.
+          </p>
         </div>
       </div>
     </div>
   </section>
-  <section id="about-us-section">
+  <section id="partners-section" class="p-5 bg-light">
     <div class="container">
       <div
-        class="row d-flex flex-column-reverse flex-md-column-reverse flex-lg-column-reverse flex-xl-row justify-content-between align-items-center"
+        class="row d-flex justify-content-start align-items-center text-start"
       >
         <div
           class="col-12 d-flex justify-content-start align-items-center mb-3"
         >
-          <h2 id="partners-title" class="fw-bold">
-            Parceiros
-            <hr id="partners-underline" />
+          <h2 id="services-title" class="fw-bold">
+            Parcerias
+            <hr class="underline-title" />
           </h2>
+        </div>
+        <p class="text-muted mb-5">
+          Valorizamos o apoio incondicional de instituições e profissionais que
+          acreditam na missão do PetSpot. Contamos, primeiramente, com o suporte
+          essencial do Centro Universitário Facens, que contribuiu com
+          conhecimento e recursos durante todo o processo de desenvolvimento.
+          Nossa visão para o futuro também envolve parcerias com clínicas
+          veterinárias e profissionais de saúde animal que compartilhem o
+          compromisso com o bem-estar dos pets e acreditem na iniciativa Open
+          Health. Juntos, buscamos construir uma rede confiável que integre e
+          facilite o cuidado e acompanhamento da saúde dos animais.
+        </p>
+        <div class="row justify-content-center align-items-center">
+          <!-- Parceiro Facens -->
+          <div
+            class="col-12 col-md-4 d-flex flex-column align-items-center p-3"
+          >
+            <img
+              src="https://facens.br/wp-content/uploads/2021/03/logo-f.png"
+              alt="Facens Logo"
+              class="img-fluid mb-3"
+              style="width: 150px"
+            />
+            <p class="text-muted">Centro Universitário Facens</p>
+          </div>
+          <!-- Parceiro Clínicas -->
+          <div
+            class="col-12 col-md-4 d-flex flex-column align-items-center p-3"
+          >
+            <img
+              src="../assets/images/svg/hospital-svgrepo-com.svg"
+              alt="Clinicas Logo"
+              class="img-fluid mb-3"
+              style="width: 4rem"
+            />
+            <p class="text-muted">Clínicas Parceiras</p>
+          </div>
+          <!-- Parceiro Veterinários -->
+          <div
+            class="col-12 col-md-4 d-flex flex-column align-items-center p-3"
+          >
+            <img
+              src="../assets/images/svg/veterinarian-svgrepo-com.svg"
+              alt="Veterinarios Logo"
+              class="img-fluid mb-3"
+              style="width: 4rem"
+            />
+            <p class="text-muted">Veterinários</p>
+          </div>
         </div>
       </div>
     </div>
@@ -221,7 +284,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
   font-size: 1.2rem;
 }
 
-hr#section-title-underline.about-us-underline.partners-underline {
+.underline-title {
   opacity: 100%;
   margin: 0.5rem 0 !important; /* Espaçamento vertical */
   border-top: 0.15rem solid var(--brand-color) !important;
