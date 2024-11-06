@@ -173,6 +173,38 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
       </div>
     </div>
   </section>
+  <section id="about-us-section">
+    <div class="container">
+      <div
+        class="row d-flex flex-column-reverse flex-md-column-reverse flex-lg-column-reverse flex-xl-row justify-content-between align-items-center"
+      >
+        <div
+          class="col-12 d-flex justify-content-start align-items-center mb-3"
+        >
+          <h2 id="about-us-title" class="fw-bold">
+            Sobre Nós
+            <hr id="about-us-underline" />
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="about-us-section">
+    <div class="container">
+      <div
+        class="row d-flex flex-column-reverse flex-md-column-reverse flex-lg-column-reverse flex-xl-row justify-content-between align-items-center"
+      >
+        <div
+          class="col-12 d-flex justify-content-start align-items-center mb-3"
+        >
+          <h2 id="partners-title" class="fw-bold">
+            Parceiros
+            <hr id="partners-underline" />
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
   <section id="footer-section">
     <FooterComponent />
   </section>
@@ -189,7 +221,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
   font-size: 1.2rem;
 }
 
-hr#services-underline {
+hr#section-title-underline.about-us-underline.partners-underline {
   opacity: 100%;
   margin: 0.5rem 0 !important; /* Espaçamento vertical */
   border-top: 0.15rem solid var(--brand-color) !important;
