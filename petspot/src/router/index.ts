@@ -7,7 +7,7 @@ import OurPartnersPage from "../pages/OurPartnersPage.vue";
 import ContactUsPage from "../pages/ContactUsPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 
-const isAuthenticated = () => {
+export const isAuthenticated = () => {
   const userId = localStorage.getItem("userId");
 
   if (!userId) {
@@ -35,7 +35,15 @@ const authGuard = (_to: any, _from: any, next: any) => {
   if (isAuthenticated()) {
     next();
   } else {
-    next("login-page");
+    next("/");
+  }
+};
+
+const noAuth = (_to: any, _from: any, next: any) => {
+  if (!isAuthenticated()) {
+    next();
+  } else {
+    next("/");
   }
 };
 
@@ -45,39 +53,33 @@ const routes = [
     name: "landing-page",
     component: LandingPage,
   },
-
   {
     path: "/sign-in",
     name: "login-page",
     component: LoginPage,
-    beforeEnter: isAuthenticated,
+    beforeEnter: noAuth,
   },
-
   {
     path: "/sign-up",
     name: "register-page",
     component: RegisterPage,
-    beforeEnter: authGuard,
+    beforeEnter: noAuth,
   },
-
   {
     path: "/our-services",
     name: "our-services-page",
     component: OurServicesPage,
   },
-
   {
     path: "/about-us",
     name: "about-us-page",
     component: AboutUsPage,
   },
-
   {
     path: "/our-partners",
     name: "our-partners-page",
     component: OurPartnersPage,
   },
-
   {
     path: "/contact-us",
     name: "contact-us-page",

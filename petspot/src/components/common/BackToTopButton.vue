@@ -43,8 +43,4 @@ onBeforeUnmount(() => {
   transition: opacity 0.3s;
   z-index: 999;
 }
-
-.back-to-top:hover {
-  background-color: #0056b3;
-}
 </style>

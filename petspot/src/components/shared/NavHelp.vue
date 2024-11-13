@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { isAuthenticated } from "../../router/index.ts";
+
 // Função para fechar qualquer offcanvas aberto e remover o backdrop manualmente
 const closeOffcanvas = () => {
   // Seleciona todos os offcanvas abertos
@@ -55,7 +57,7 @@ const closeOffcanvas = () => {
         <ion-icon name="person-circle" class="nav-icon"></ion-icon>
         <span
           class="nav-icon-span text-nowrap d-none d-md-none d-lg-none d-xl-block fs-5"
-          >Registrar-se</span
+          >Entre</span
         >
       </a>
     </li>
@@ -98,6 +100,7 @@ const closeOffcanvas = () => {
 
   <!-- Offcanvas Registrar -->
   <div
+    v-if="!isAuthenticated()"
     class="offcanvas offcanvas-end"
     tabindex="-1"
     id="offCanvasRegistrar"
@@ -149,5 +152,4 @@ const closeOffcanvas = () => {
     </div>
   </div>
 </template>
-<style scoped>
-</style>
+<style scoped></style>
