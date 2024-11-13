@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
   <a
     v-if="isVisible"
     @click="scrollToTop"
-    class="back-to-top d-flex align-items-center justify-content-center bg-white rounded-circle shadow fs-3 p-1 m-2"
+    class="back-to-top d-flex align-items-center justify-content-center bg-white rounded-circle shadow fs-1 p-1 m-2"
   >
     <ion-icon name="arrow-up-outline"></ion-icon>
   </a>
@@ -41,6 +41,7 @@ onBeforeUnmount(() => {
   right: 1rem;
   cursor: pointer;
   transition: opacity 0.3s;
+  z-index: 999;
 }
 
 .back-to-top:hover {
