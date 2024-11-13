@@ -8,6 +8,46 @@ const checkWindowSize = () => {
   isMdOrAbove.value = window.innerWidth >= 992;
 };
 
+const closeOffcanvas = () => {
+  // Seleciona todos os offcanvas abertos
+  const offcanvasElements = document.querySelectorAll(".offcanvas.show");
+  offcanvasElements.forEach((element) => {
+    const offcanvasInstance = (window as any).bootstrap.Offcanvas.getInstance(
+      element as HTMLElement
+    );
+    if (offcanvasInstance) {
+      offcanvasInstance.hide(); // Fecha o offcanvas
+    }
+  });
+
+  // Cria um listener para o evento de fechamento e remove após ser disparado
+  const handleOffcanvasHidden = () => {
+    const backdrop = document.querySelector(".offcanvas-backdrop");
+    if (backdrop) {
+      backdrop.remove(); // Remove o fundo escuro (overlay) manualmente
+    }
+    document.body.classList.remove("offcanvas-open"); // Remove a classe que desativa o scroll
+    document.removeEventListener("hidden.bs.offcanvas", handleOffcanvasHidden); // Remove o listener
+  };
+
+  // Adiciona o evento para remover o backdrop após o fechamento
+  document.addEventListener("hidden.bs.offcanvas", handleOffcanvasHidden);
+};
+
+const handleLinkClick = (event: Event) => {
+  event.preventDefault(); // Evita o comportamento padrão do link
+  const targetId = (event.target as HTMLAnchorElement).getAttribute("href");
+
+  if (targetId) {
+    // Adiciona um pequeno atraso antes de rolar para o elemento alvo
+    setTimeout(() => {
+      document.querySelector(targetId)?.scrollIntoView({ behavior: "smooth" });
+    }, 300); // Ajuste o valor de 300ms conforme necessário
+  }
+
+  closeOffcanvas(); // Fecha o offcanvas imediatamente
+};
+
 onMounted(() => {
   checkWindowSize();
   window.addEventListener("resize", checkWindowSize);
@@ -29,19 +69,13 @@ onBeforeUnmount(() => {
         <a class="nav-link" href="#services-title">Nossos Serviços</a>
       </li>
       <li class="nav-item text-nowrap">
-        <router-link class="nav-link" :to="{ name: 'about-us-page' }"
-          >Sobre Nós</router-link
-        >
+        <a class="nav-link" href="#about-us-title">Sobre Nós</a>
       </li>
       <li class="nav-item text-nowrap">
-        <router-link class="nav-link" :to="{ name: 'our-partners-page' }"
-          >Parceiros</router-link
-        >
+        <a class="nav-link" href="#partners-title">Parceiros</a>
       </li>
       <li class="nav-item text-nowrap">
-        <router-link class="nav-link" :to="{ name: 'contact-us-page' }"
-          >Fale conosco</router-link
-        >
+        <a class="nav-link" href="#footer-section">Fale conosco</a>
       </li>
     </ul>
 
@@ -76,20 +110,36 @@ onBeforeUnmount(() => {
           <ul class="navbar-nav d-flex flex-column gap-4">
             <!-- Não esquecer de atualizar esta lista para ser igual ao MD Device -->
             <li class="nav-item text-nowrap">
-              <a class="nav-link" href="#services-title">Nossos Serviços</a>
-            </li>
-            <li class="nav-item text-nowrap">
-              <router-link class="nav-link" :to="{ name: 'about-us-page' }"
-                >Sobre Nós</router-link
+              <a
+                class="nav-link"
+                href="#services-title"
+                @click="handleLinkClick($event)"
+                >Nossos Serviços</a
               >
             </li>
             <li class="nav-item text-nowrap">
-              <router-link class="nav-link" :to="{ name: 'our-partners-page' }"
-                >Parceiros</router-link
+              <a
+                class="nav-link"
+                href="#about-us-title"
+                @click="handleLinkClick($event)"
+                >Sobre Nós</a
               >
             </li>
             <li class="nav-item text-nowrap">
-              <a class="nav-link">Fale conosco</a>
+              <a
+                class="nav-link"
+                href="#partners-title"
+                @click="handleLinkClick($event)"
+                >Parceiros</a
+              >
+            </li>
+            <li class="nav-item text-nowrap">
+              <a
+                class="nav-link"
+                href="#footer-section"
+                @click="handleLinkClick($event)"
+                >Fale conosco</a
+              >
             </li>
           </ul>
         </div>

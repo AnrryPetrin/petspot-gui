@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackToTopButton from "../components/common/BackToTopButton.vue";
 import ShapeDivider1 from "../components/common/ShapeDivider1.vue";
 import ShapeDivider2 from "../components/common/ShapeDivider2.vue";
 import FooterComponent from "../layouts/FooterComponent.vue";
@@ -7,6 +8,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
 
 <template>
   <HeaderComponent />
+  <BackToTopButton />
   <section id="presentation-card" class="p-5">
     <div class="container">
       <div
@@ -185,7 +187,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
         <div
           class="col-12 d-flex justify-content-start align-items-center mb-3"
         >
-          <h2 id="services-title" class="fw-bold">
+          <h2 id="about-us-title" class="fw-bold">
             Sobre Nós
             <hr class="underline-title" />
           </h2>
@@ -211,7 +213,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
         <div
           class="col-12 d-flex justify-content-start align-items-center mb-3"
         >
-          <h2 id="services-title" class="fw-bold">
+          <h2 id="partners-title" class="fw-bold">
             Parcerias
             <hr class="underline-title" />
           </h2>
