@@ -65,26 +65,6 @@ const routes = [
     component: RegisterPage,
     beforeEnter: noAuth,
   },
-  {
-    path: "/our-services",
-    name: "our-services-page",
-    component: OurServicesPage,
-  },
-  {
-    path: "/about-us",
-    name: "about-us-page",
-    component: AboutUsPage,
-  },
-  {
-    path: "/our-partners",
-    name: "our-partners-page",
-    component: OurPartnersPage,
-  },
-  {
-    path: "/contact-us",
-    name: "contact-us-page",
-    component: ContactUsPage,
-  },
 ];
 
 const router = createRouter({

@@ -2,7 +2,9 @@
 <template>
   <div class="container">
     <div class="row vh-100 d-flex align-items-center justify-content-center">
-      <div class="col d-none d-md-block"></div>
+      <div class="col d-none d-md-block">
+        <img src="../assets/images/svg/undraw_friends_r511.svg" class="d-flex justify-content-center align-items-center w-75"/>
+      </div>
       <div class="col">
         <form class="row justify-content-center justify-content-md-start g-3">
           <div class="col-md-12 col-9 py-4 py-md-0">
