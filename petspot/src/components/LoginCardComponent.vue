@@ -3,19 +3,21 @@
 <template>
   <div class="containter">
     <div
-      class="row vh-100 d-md-flex d-flex flex-md-row flex-column-reverse align-items-center justify-content-center gap-4"
+      class="row vh-100 d-flex flex-column align-items-center justify-content-center m-0 gap-2"
     >
       <div
-        class="col-md col-8 justify-content-center align-items-center d-flex"
+        class="col-md-4 col-12 justify-content-center align-items-center d-flex"
       >
         <img
           src="../assets/images/svg/undraw_dog_walking_re_l61p.svg"
-          class="d-flex justify-content-center align-items-center w-75"
+          class="d-flex justify-content-center align-items-center w-50"
         />
       </div>
-      <div class="col-md col-12 d-flex justify-content-center align-items-center">
-        <div class="col-md-8 col-11 rounded shadow">
-          <form class="row p-md-4 p-2 g-4 justify-content-start" id="login-form">
+      <div
+        class="col-md-8 col-12 d-flex justify-content-center align-items-center"
+      >
+        <div class="col-md-6 col-11 rounded rounded-5 shadow p-md-4 p-4">
+          <form class="row g-4 justify-content-start" id="login-form">
             <h1>Conectar-se</h1>
             <div class="col-md-12">
               <label
@@ -67,7 +69,7 @@
                 </label>
               </div>
             </div>
-            <div class="col-md-12 py-md-0 py-4 d-flex justify-content-between">
+            <div class="col-md-12 d-flex justify-content-between">
               <a
                 class="logincard-link d-flex align-items-center gap-2"
                 href="forgot-password.html"
@@ -76,7 +78,7 @@
               ></a>
               <button
                 type="submit"
-                class="btn btn-primary text-light logincard-link d-flex align-items-center gap-2"
+                class="btn btn-primary rounded rounded-pill shadow text-light logincard-link d-flex align-items-center gap-2"
                 id="botao-cadastrar"
               >
                 Entrar<ion-icon name="enter" class="logincard-icon"></ion-icon>

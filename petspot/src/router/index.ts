@@ -1,10 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../pages/LandingPage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
-import OurServicesPage from "../pages/OurServicesPage.vue";
-import AboutUsPage from "../pages/AboutUsPage.vue";
-import OurPartnersPage from "../pages/OurPartnersPage.vue";
-import ContactUsPage from "../pages/ContactUsPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 
 export const isAuthenticated = () => {

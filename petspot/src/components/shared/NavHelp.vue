@@ -26,6 +26,7 @@ const closeOffcanvas = () => {
 
   // Adiciona o evento para remover o backdrop após o fechamento
   document.addEventListener("hidden.bs.offcanvas", handleOffcanvasHidden);
+  
 };
 </script>
 <template>
@@ -33,35 +34,36 @@ const closeOffcanvas = () => {
     class="navbar-nav d-flex flex-row align-items-center justify-content-center gap-1 gap-md-2 gap-lg-4"
   >
     <li class="nav-item p-2">
-      <a
+      <router-link
         class="d-flex align-items-center text-decoration-none gap-1"
-        data-bs-toggle="offcanvas"
-        href="#offCanvasAjuda"
+        to="#offCanvasAjuda"
         role="button"
         aria-controls="offCanvasAjuda"
+        data-bs-toggle="offcanvas"
       >
         <ion-icon name="help-buoy" class="nav-icon"></ion-icon>
         <span
           class="nav-icon-span text-nowrap d-none d-md-none d-lg-none d-xl-block fs-5"
           >Ajuda</span
         >
-      </a>
+      </router-link>
     </li>
     <li class="nav-item p-2">
-      <a
+      <router-link
         class="d-flex align-items-center text-decoration-none gap-1"
-        data-bs-toggle="offcanvas"
-        href="#offCanvasRegistrar"
+        to="#offCanvasRegistrar"
         role="button"
+        data-bs-toggle="offcanvas"
       >
         <ion-icon name="person-circle" class="nav-icon"></ion-icon>
         <span
           class="nav-icon-span text-nowrap d-none d-md-none d-lg-none d-xl-block fs-5"
           >Entre</span
         >
-      </a>
+      </router-link>
     </li>
   </ul>
+
   <!-- Offcanvas Ajuda -->
   <div
     class="offcanvas offcanvas-end"
@@ -142,7 +144,7 @@ const closeOffcanvas = () => {
             Pets.
           </h6>
           <router-link
-            :to="{ name: 'login-page' }"
+            :to="{ path: '/sign-in' }"
             @click="closeOffcanvas"
             class="btn btn-outline-primary"
             >Conectar-se</router-link

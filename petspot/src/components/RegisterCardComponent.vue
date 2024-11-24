@@ -3,9 +3,12 @@
   <div class="container">
     <div class="row vh-100 d-flex align-items-center justify-content-center">
       <div class="col d-none d-md-block">
-        <img src="../assets/images/svg/undraw_friends_r511.svg" class="d-flex justify-content-center align-items-center w-75"/>
+        <img
+          src="../assets/images/svg/undraw_friends_r511.svg"
+          class="d-flex justify-content-center align-items-center w-75"
+        />
       </div>
-      <div class="col">
+      <div class="col rounded rounded-5 shadow px-4 py-2">
         <form class="row justify-content-center justify-content-md-start g-3">
           <div class="col-md-12 col-9 py-4 py-md-0">
             <h1 class="text-md-start text-center">Cadastre-se</h1>
@@ -120,9 +123,13 @@
             </div>
           </div>
           <div
-            class="col-md-4 col-9 py-4 d-flex justify-content-md-end justify-content-center align-items-center"
+            class="col-md-4 col-9 py-4 d-flex justify-content-md-end justify-content-center align-items-end"
           >
-            <button type="submit" class="btn btn-primary" id="botao-cadastrar">
+            <button
+              type="submit"
+              class="btn btn-primary rounded-pill text-white shadow"
+              id="botao-cadastrar"
+            >
               Cadastrar-se
             </button>
           </div>

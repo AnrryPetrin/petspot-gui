@@ -31,34 +31,25 @@ import ShapeDivider3 from "../components/common/ShapeDivider3.vue";
           <h5 class="text-uppercase text-white">Links rápidos</h5>
           <ul class="list-inline mb-0">
             <li class="list-inline-item">
-              <router-link
-                class="text-white"
-                :to="{ name: 'our-services-page' }"
-              >
-                Nossos Serviços
-              </router-link>
+              <a class="text-white" href="#services-title"> Nossos Serviços </a>
               <span>|</span>
             </li>
             <li class="list-inline-item">
-              <router-link class="text-white" :to="{ name: 'about-us-page' }">
-                Sobre Nós
-              </router-link>
+              <a class="text-white" href="#about-us-title"> Sobre Nós </a>
             </li>
           </ul>
           <ul class="list-inline">
             <li class="list-inline-item">
-              <router-link
+              <a
                 class="text-white"
-                :to="{ name: 'our-partners-page' }"
+                href="#partners-title"
               >
                 Parceiros
-              </router-link>
+            </a>
               <span>|</span>
             </li>
             <li class="list-inline-item">
-              <router-link class="text-white" :to="{ name: 'contact-us-page' }">
-                Fale Conosco
-              </router-link>
+              <a class="text-white" href="#contact-title"> Fale Conosco </a>
             </li>
           </ul>
         </div>
