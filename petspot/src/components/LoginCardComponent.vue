@@ -1,4 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { login } from "../scripts/ts/utils/authUtils";
+
+const email = ref("");
+const password = ref("");
+const errorMessage = ref("");
+
+const handleLogin = async () => {
+  errorMessage.value = "";
+
+  if (!email.value || !password.value) {
+    errorMessage.value = "Preencha todos os campos.";
+    return;
+  }
+
+  const payload = { email: email.value, password: password.value };
+
+  const isLoggedIn = await login(payload);
+
+  if (isLoggedIn) {
+    // Redirecionar para a página principal ou dashboard
+    window.location.href = "/";
+  } else {
+    errorMessage.value = "Credenciais inválidas. Tente novamente.";
+  }
+};
+</script>
 
 <template>
   <div class="containter">

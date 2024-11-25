@@ -11,11 +11,13 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "petspot": "file:",
     "vue": "^3.4.37",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
+    "@types/node": "^22.9.3",
     "@vitejs/plugin-vue": "^5.1.2",
     "gh-pages": "^6.1.1",
     "typescript": "^5.5.3",
