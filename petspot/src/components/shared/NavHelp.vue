@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isAuthenticated } from "../../router/index.ts";
+import { isAuthenticated } from "../../scripts/ts/utils/authUtils";
 
 // Função para fechar qualquer offcanvas aberto e remover o backdrop manualmente
 const closeOffcanvas = () => {
@@ -26,7 +26,6 @@ const closeOffcanvas = () => {
 
   // Adiciona o evento para remover o backdrop após o fechamento
   document.addEventListener("hidden.bs.offcanvas", handleOffcanvasHidden);
-  
 };
 </script>
 <template>

@@ -80,14 +80,16 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
         >
           <div class="col">
             <div
-              class="card d-flex align-items-center justify-content-center gap-2"
+              class="card d-flex align-items-center justify-content-center gap-2 p-2"
             >
               <img
-                src="../assets/images/Agendamento de consultas.svg"
+                src="../assets/images/svg/consultation-consulting-laptop-doctor-healthy-medical-care-svgrepo-com.svg"
                 class="card-img-top m-3"
                 alt="..."
               />
-              <div class="card-body text-center p-2">
+              <div
+                class="card-body text-center p-2 d-flex justify-content-around align-items-center flex-column"
+              >
                 <h5 class="card-title fs-4 fw-semibold">
                   Agendamento de consultas
                 </h5>
@@ -103,11 +105,13 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
               class="card d-flex align-items-center justify-content-center gap-2"
             >
               <img
-                src="../assets/images/Carteira de Vacinação.svg"
+                src="../assets/images/svg/consultation-consulting-laptop-doctor-healthy-medical-care-2-svgrepo-com.svg"
                 class="card-img-top m-3"
                 alt="..."
               />
-              <div class="card-body text-center p-2">
+              <div
+                class="card-body text-center p-2 d-flex justify-content-around align-items-center flex-column"
+              >
                 <h5 class="card-title fs-4 fw-semibold">
                   Carteirinha de vacinação
                 </h5>
@@ -119,14 +123,16 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
           <div class="col">
             <div
-              class="card d-flex align-items-center justify-content-center gap-2"
+              class="card d-flex align-items-center justify-content-center gap-2 p-2"
             >
               <img
-                src="../assets/images/Prontuários.svg"
+                src="../assets/images/svg/clipboard-note-paper-document-hospital-result-medical-svgrepo-com.svg"
                 class="card-img-top m-3"
                 alt="..."
               />
-              <div class="card-body text-center p-2">
+              <div
+                class="card-body text-center p-2 d-flex justify-content-around align-items-center flex-column"
+              >
                 <h5 class="card-title fs-4 fw-semibold">
                   Consulta à prontuários
                 </h5>
@@ -139,14 +145,16 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
           <div class="col">
             <div
-              class="card d-flex align-items-center justify-content-center gap-2"
+              class="card d-flex align-items-center justify-content-center gap-2 p-2"
             >
               <img
-                src="../assets/images/Converse com Veterinários.svg"
+                src="../assets/images/svg/chat-message-medical-health-discussion-talk-bubble-svgrepo-com.svg"
                 class="card-img-top m-3"
                 alt="..."
               />
-              <div class="card-body text-center p-2">
+              <div
+                class="card-body text-center p-2 d-flex justify-content-around align-items-center flex-column"
+              >
                 <h5 class="card-title fs-4 fw-semibold">
                   Converse facilmente com veterinários
                 </h5>
@@ -159,14 +167,16 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           </div>
           <div class="col">
             <div
-              class="card d-flex align-items-center justify-content-center gap-2"
+              class="card d-flex align-items-center justify-content-center gap-2 p-2"
             >
               <img
-                src="../assets/images/Cadastre seu pet.svg"
+                src="../assets/images/svg/click-health-internet-cursor-pointer-clicking-medical-svgrepo-com.svg"
                 class="card-img-top m-3"
                 alt="..."
               />
-              <div class="card-body text-center p-2">
+              <div
+                class="card-body text-center p-2 d-flex justify-content-around align-items-center flex-column"
+              >
                 <h5 class="card-title fs-4 fw-semibold">Cadastre Seu Pet</h5>
                 <p class="card-text">
                   Centralize todas as informações do seu pet de forma organizada
@@ -294,7 +304,8 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
 }
 
 .card {
-  height: 20rem;
+  height: 100%;
+  min-height: 20rem;
 }
 .card-img-top {
   aspect-ratio: 1;

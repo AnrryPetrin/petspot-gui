@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../pages/LandingPage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
-import { isAuthenticated } from "../scripts/ts/utils/authUtils"; // Importando do utilitário
+import { isAuthenticated } from "../scripts/ts/utils/authUtils.ts"; // Importando do utilitário
 
 /**
  * Proteção para rotas autenticadas
