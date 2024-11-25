@@ -26,7 +26,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
             garantir o <strong>bem-estar</strong> dos pets e a
             <strong>tranquilidade</strong> de seus cuidadores.
           </p>
-          <a href="#" class="btn btn-primary"
+          <a href="#" class="btn btn-primary rounded-pill text-white shadow"
             ><span class="d-flex align-items-center text-light gap-2"
               >Conheça mais<ion-icon
                 name="paw"

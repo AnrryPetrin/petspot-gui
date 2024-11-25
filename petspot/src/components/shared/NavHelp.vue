@@ -91,7 +91,7 @@ const closeOffcanvas = () => {
           </h6>
           <a
             href="mailto:gruposhankara@gmail.com?body=Olá%20preciso%20de%20ajuda,%20poderiam%20me%20ajudar%3F"
-            class="btn btn-outline-primary"
+            class="btn btn-primary rounded-pill text-white shadow"
             >Enviar email</a
           >
         </div>
@@ -129,7 +129,7 @@ const closeOffcanvas = () => {
           <router-link
             :to="{ name: 'register-page' }"
             @click="closeOffcanvas"
-            class="btn btn-outline-primary"
+            class="btn btn-primary rounded-pill text-white shadow"
             >Registrar-se</router-link
           >
         </div>
@@ -145,7 +145,7 @@ const closeOffcanvas = () => {
           <router-link
             :to="{ path: '/sign-in' }"
             @click="closeOffcanvas"
-            class="btn btn-outline-primary"
+            class="btn btn-primary rounded-pill text-white shadow"
             >Conectar-se</router-link
           >
         </div>
