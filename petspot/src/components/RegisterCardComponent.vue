@@ -13,23 +13,34 @@ const birthDate = ref("");
 const countryCode = ref("+55");
 const phone = ref("");
 const agreeTerms = ref(false);
-const subscribeNewsletter = ref(false); // Restaurado
+const subscribeNewsletter = ref(false);
 
 // Mensagens de erro e sucesso
-const errorMessage = ref("");
+const errorMessage = ref<string[]>([]); // Array para múltiplas mensagens de erro
 const successMessage = ref("");
 
 // Regex e validações
-const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/; // Nome padrão brasileiro
-const usernameRegex = /^[a-zA-Z0-9_.]{3,25}$/; // Username padrão de redes sociais
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email rigoroso
+const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/;
+const usernameRegex = /^[a-zA-Z0-9_.]{3,25}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = {
-  "+55": /^[1-9]{2}9?\d{8}$/, // Brasil (DDD + telefone)
-  "+1": /^\d{10}$/, // EUA
-  "+44": /^\d{10}$/, // Reino Unido
+  "+55": /^[1-9]{2}9?\d{8}$/,
+  "+1": /^\d{10}$/,
+  "+44": /^\d{10}$/,
 };
 
-// Cálculo da força da senha e barra de progresso
+// Função para formatar o telefone no formato "+55 (XX) XXXXX-XXXX"
+const formatPhoneNumber = (countryCode: string, phone: string): string => {
+  if (countryCode === "+55" && phone.length >= 10) {
+    const ddd = phone.slice(0, 2);
+    const firstPart = phone.slice(2, 7);
+    const secondPart = phone.slice(7);
+    return `${countryCode} (${ddd}) ${firstPart}-${secondPart}`;
+  }
+  return `${countryCode} ${phone}`;
+};
+
+// Validação da força da senha
 const passwordStrength = computed(() => {
   const checks = {
     length: password.value.length >= 8 ? 1 : 0,
@@ -54,16 +65,21 @@ const passwordStrength = computed(() => {
 
 const passwordStrengthClass = computed(() => {
   const { score } = passwordStrength.value;
-  if (score <= 2) return "weak"; // Ruim
-  if (score === 3) return "medium"; // Média
-  if (score === 4) return "good"; // Boa
-  return "very-good"; // Muito boa
+  if (score <= 2) return "weak";
+  if (score === 3) return "medium";
+  if (score === 4) return "good";
+  return "very-good";
 });
 
+// Validações dinâmicas
 const isPhoneValid = computed(() => {
   const regex = phoneRegex[countryCode.value as keyof typeof phoneRegex];
   return regex ? regex.test(phone.value) : false;
 });
+
+const arePasswordsMatching = computed(
+  () => password.value === confirmPassword.value
+);
 
 const isFormValid = computed(() => {
   return (
@@ -71,64 +87,78 @@ const isFormValid = computed(() => {
     nameRegex.test(surname.value) &&
     emailRegex.test(email.value) &&
     usernameRegex.test(username.value) &&
-    passwordStrength.value.score >= 4 && // Requer força de senha "Boa" ou superior
+    passwordStrength.value.score >= 4 &&
+    arePasswordsMatching.value &&
     new Date().getFullYear() - new Date(birthDate.value).getFullYear() >= 13 &&
     isPhoneValid.value &&
     agreeTerms.value
   );
 });
 
-// Mensagem detalhada sobre o motivo da invalidez
-const formErrorDetails = ref("");
+// Atualiza as mensagens de erro
+watch(
+  [
+    name,
+    surname,
+    email,
+    username,
+    password,
+    confirmPassword,
+    birthDate,
+    phone,
+    agreeTerms,
+  ],
+  () => {
+    errorMessage.value = []; // Limpa mensagens anteriores
 
-// Atualiza a mensagem de erro sempre que o formulário se torna inválido
-watch(isFormValid, (newVal) => {
-  if (!newVal) {
-    if (!nameRegex.test(name.value)) {
-      formErrorDetails.value = "O nome é inválido ou está vazio.";
-    } else if (!nameRegex.test(surname.value)) {
-      formErrorDetails.value = "O sobrenome é inválido ou está vazio.";
-    } else if (!emailRegex.test(email.value)) {
-      formErrorDetails.value = "O email fornecido é inválido.";
-    } else if (!usernameRegex.test(username.value)) {
-      formErrorDetails.value =
-        "O nome de usuário deve ter entre 3 e 25 caracteres.";
-    } else if (passwordStrength.value.score < 4) {
-      formErrorDetails.value =
-        "A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.";
-    } else if (
-      new Date().getFullYear() - new Date(birthDate.value).getFullYear() <
-      13
-    ) {
-      formErrorDetails.value = "Você deve ter no mínimo 13 anos.";
-    } else if (!isPhoneValid.value) {
-      formErrorDetails.value = "O telefone informado é inválido.";
-    } else if (!agreeTerms.value) {
-      formErrorDetails.value = "Você deve concordar com os Termos de Uso.";
-    } else {
-      formErrorDetails.value =
-        "Por favor, preencha todos os campos corretamente.";
-    }
-  } else {
-    formErrorDetails.value = "";
+    if (name.value && !nameRegex.test(name.value))
+      errorMessage.value.push("O nome é inválido.");
+    if (surname.value && !nameRegex.test(surname.value))
+      errorMessage.value.push("O sobrenome é inválido.");
+    if (email.value && !emailRegex.test(email.value))
+      errorMessage.value.push("O email fornecido é inválido.");
+    if (username.value && !usernameRegex.test(username.value))
+      errorMessage.value.push(
+        "O nome de usuário deve ter entre 3 e 25 caracteres."
+      );
+    if (password.value && passwordStrength.value.score < 5)
+      errorMessage.value.push(
+        "A senha deve ser forte, com no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e caracteres especiais."
+      );
+    if (confirmPassword.value && !arePasswordsMatching.value)
+      errorMessage.value.push("As senhas não coincidem.");
+    if (
+      birthDate.value &&
+      new Date().getFullYear() - new Date(birthDate.value).getFullYear() < 13
+    )
+      errorMessage.value.push("Você deve ter no mínimo 13 anos.");
+    if (phone.value && !isPhoneValid.value)
+      errorMessage.value.push("O telefone informado é inválido.");
+    if (!agreeTerms.value)
+      errorMessage.value.push("Você deve concordar com os Termos de Uso.");
   }
-});
+);
 
 // Função para envio do formulário
 const handleRegister = async () => {
-  errorMessage.value = "";
+  errorMessage.value = [];
   successMessage.value = "";
 
   if (!isFormValid.value) {
-    errorMessage.value = "Por favor, corrija os erros antes de enviar.";
+    errorMessage.value.push("Por favor, corrija os erros antes de enviar.");
     return;
   }
+
+  const formattedPhone = formatPhoneNumber(
+    countryCode.value,
+    phone.value.replace(/\D/g, "")
+  );
 
   const payload = {
     name: `${name.value} ${surname.value}`,
     email: email.value,
     password: password.value,
-    phone: `${countryCode.value}${phone.value.replace(/\D/g, "")}`,
+    phone: formattedPhone,
   };
 
   const isRegistered = await registerUser(payload);
@@ -137,7 +167,7 @@ const handleRegister = async () => {
     successMessage.value = "Cadastro realizado com sucesso!";
     window.location.href = "/sign-in";
   } else {
-    errorMessage.value = "Erro ao realizar o cadastro. Tente novamente.";
+    errorMessage.value.push("Erro ao realizar o cadastro. Tente novamente.");
   }
 };
 </script>
@@ -210,6 +240,8 @@ const handleRegister = async () => {
               type="password"
               class="form-control"
               id="senha"
+              minlength="8"
+              maxlength="20"
               placeholder="*********"
               v-model="password"
             />
@@ -269,6 +301,8 @@ const handleRegister = async () => {
               type="tel"
               class="form-control"
               id="telefone"
+              minlength="11"
+              maxlength="12"
               placeholder="(12) 34567-8910"
               v-model="phone"
             />
@@ -318,9 +352,13 @@ const handleRegister = async () => {
           <div v-if="successMessage" class="text-success text-center mt-3">
             {{ successMessage }}
           </div>
-          <!-- Alerta com motivo -->
-          <div v-if="formErrorDetails" class="text-danger text-center mt-3">
-            {{ formErrorDetails }}
+          <!-- Lista de erros -->
+          <div v-if="errorMessage.length" class="text-danger text-center mt-3">
+            <ul class="text-start">
+              <li v-for="(error, index) in errorMessage" :key="index">
+                {{ error }}
+              </li>
+            </ul>
           </div>
         </form>
       </div>
