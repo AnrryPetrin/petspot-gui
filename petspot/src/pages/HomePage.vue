@@ -252,7 +252,10 @@ onMounted(() => {
           </button>
         </div>
         <!-- Botão Editar Pets -->
-        <div class="card rounded-5 border-0 shadow bg-light p-3">
+        <div
+          v-if="pets.length > 1"
+          class="card rounded-5 border-0 shadow bg-light p-3"
+        >
           <button
             class="btn btn-primary rounded-5 shadow p-2 d-flex justify-content-center align-items-center gap-2 text-white"
             @click="toggleEdit"
@@ -261,7 +264,7 @@ onMounted(() => {
           </button>
         </div>
       </div>
-
+      <hr />
       <!-- Lista de Pets (cards) -->
       <div
         class="col-12 col-md-12 col-lg-12 col-xl-6 d-flex justify-content-center align-items-center gap-3 p-md-5 p-4 w-100 flex-wrap"
