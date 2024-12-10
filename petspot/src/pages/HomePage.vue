@@ -352,7 +352,6 @@ function toggleDetailsEdit() {
     errorMessage.value = [];
   }
 }
-
 onMounted(() => {
   fetchPets();
 });
@@ -370,7 +369,7 @@ onMounted(() => {
         <!-- Botão Cadastrar Pet -->
         <div class="card rounded-5 border-0 shadow bg-light p-3">
           <button
-            class="btn btn-primary rounded-5 shadow p-2 d-flex justify-content-center align-items-center gap-2 text-white"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2 d-flex justify-content-center align-items-center gap-2"
             @click="showModal = true"
           >
             Cadastrar Pet<ion-icon name="add-circle" class="fs-3"></ion-icon>
@@ -382,7 +381,7 @@ onMounted(() => {
           class="card rounded-5 border-0 shadow bg-light p-3"
         >
           <button
-            class="btn btn-primary rounded-5 shadow p-2 d-flex justify-content-center align-items-center gap-2 text-white"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2 d-flex justify-content-center align-items-center gap-2"
             @click="toggleEdit"
           >
             Editar Pets<ion-icon name="create" class="fs-3"></ion-icon>
@@ -423,7 +422,7 @@ onMounted(() => {
           <!-- Se estiver em modo de edição, mostra botão deletar -->
           <div v-if="isEditing" class="position-absolute top-0 end-0 m-3">
             <button
-              class="btn btn-sm btn-danger rounded-pill d-flex align-items-center gap-1"
+              class="rounded-5 border-0 shadow text-white bg-primary btn-sm d-flex align-items-center gap-1 p-2"
               @click.stop="deletePet(pet.id!)"
             >
               Deletar<ion-icon name="trash"></ion-icon>
@@ -447,7 +446,7 @@ onMounted(() => {
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="modal-title">Detalhes do Pet</h5>
           <button
-            class="btn btn-sm btn-secondary"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2"
             @click="showDetailsModal = false"
           >
             Fechar
@@ -456,14 +455,14 @@ onMounted(() => {
         <!-- Botão para entrar/sair do modo edição -->
         <div class="d-flex justify-content-end gap-2 mb-3">
           <button
-            class="btn btn-secondary rounded-pill"
             v-if="isPetDetailsEditing"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2"
             @click="toggleDetailsEdit"
           >
             Cancelar
           </button>
           <button
-            class="btn btn-primary rounded-pill"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2"
             @click="isPetDetailsEditing ? updatePet() : toggleDetailsEdit()"
           >
             {{ isPetDetailsEditing ? "Salvar" : "Editar" }}
@@ -599,26 +598,31 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="col-12 col-md-6 mt-3 mt-md-0">
-            <!-- Lista de vacinas estilo card -->
+          <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column">
+            <!-- Lista de vacinas com scroll -->
             <h6 class="mb-3">Vacinas do Pet</h6>
-            <div v-if="loadingVaccines">Carregando vacinas...</div>
-            <div v-else-if="vaccinesError">
-              <p class="text-danger">{{ vaccinesError }}</p>
-            </div>
-            <div v-else>
-              <div v-if="!selectedPetVaccines.length" class="text-muted">
-                Nenhuma vacina encontrada.
+            <div
+              class="flex-grow-1 d-flex flex-column"
+              style="max-height: 200px; overflow-y: auto"
+            >
+              <div v-if="loadingVaccines">Carregando vacinas...</div>
+              <div v-else-if="vaccinesError">
+                <p class="text-danger">{{ vaccinesError }}</p>
               </div>
-              <div v-else class="d-flex flex-wrap gap-3">
-                <div
-                  v-for="vac in selectedPetVaccines"
-                  :key="vac.id"
-                  class="card rounded-5 border-0 shadow bg-light p-3"
-                  style="min-width: 200px"
-                >
-                  <strong>{{ vac.name }}</strong>
-                  <small class="text-muted">Data: {{ vac.dateGiven }}</small>
+              <div v-else>
+                <div v-if="!selectedPetVaccines.length" class="text-muted">
+                  Nenhuma vacina encontrada.
+                </div>
+                <div v-else class="d-flex flex-wrap gap-3">
+                  <div
+                    v-for="vac in selectedPetVaccines"
+                    :key="vac.id"
+                    class="card rounded-5 border-0 shadow bg-light p-3"
+                    style="min-width: 200px"
+                  >
+                    <strong>{{ vac.name }}</strong>
+                    <small class="text-muted">Data: {{ vac.dateGiven }}</small>
+                  </div>
                 </div>
               </div>
             </div>
@@ -746,12 +750,15 @@ onMounted(() => {
           <div class="d-flex justify-content-end gap-2 mt-3">
             <button
               type="button"
-              class="btn btn-secondary rounded-pill"
+              class="rounded-5 border-0 shadow text-white bg-primary p-2"
               @click="showModal = false"
             >
               Cancelar
             </button>
-            <button type="submit" class="btn btn-primary rounded-pill">
+            <button
+              type="submit"
+              class="rounded-5 border-0 shadow text-white bg-primary p-2"
+            >
               Cadastrar
             </button>
           </div>
