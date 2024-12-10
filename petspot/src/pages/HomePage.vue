@@ -446,7 +446,7 @@ onMounted(() => {
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="modal-title">Detalhes do Pet</h5>
           <button
-            class="rounded-5 border-0 shadow text-white bg-primary p-2"
+            class="rounded-5 border-0 shadow text-white bg-secondary p-2"
             @click="showDetailsModal = false"
           >
             Fechar
@@ -456,7 +456,7 @@ onMounted(() => {
         <div class="d-flex justify-content-end gap-2 mb-3">
           <button
             v-if="isPetDetailsEditing"
-            class="rounded-5 border-0 shadow text-white bg-primary p-2"
+            class="rounded-5 border-0 shadow text-white bg-secondary p-2"
             @click="toggleDetailsEdit"
           >
             Cancelar
@@ -599,30 +599,40 @@ onMounted(() => {
           </div>
 
           <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column">
-            <!-- Lista de vacinas com scroll -->
-            <h6 class="mb-3">Vacinas do Pet</h6>
+            <!-- Card de vacinas -->
             <div
-              class="flex-grow-1 d-flex flex-column"
-              style="max-height: 200px; overflow-y: auto"
+              class="card rounded-5 border-0 shadow bg-light p-3 h-100 d-flex flex-column"
             >
-              <div v-if="loadingVaccines">Carregando vacinas...</div>
-              <div v-else-if="vaccinesError">
-                <p class="text-danger">{{ vaccinesError }}</p>
-              </div>
-              <div v-else>
-                <div v-if="!selectedPetVaccines.length" class="text-muted">
-                  Nenhuma vacina encontrada.
+              <h6 class="mb-3">Vacinas do Pet</h6>
+              <div
+                class="flex-grow-1"
+                style="max-height: 200px; overflow-y: auto"
+              >
+                <div v-if="loadingVaccines">Carregando vacinas...</div>
+                <div v-else-if="vaccinesError">
+                  <p class="text-danger">{{ vaccinesError }}</p>
                 </div>
-                <div v-else class="d-flex flex-wrap gap-3">
-                  <div
-                    v-for="vac in selectedPetVaccines"
-                    :key="vac.id"
-                    class="card rounded-5 border-0 shadow bg-light p-3"
-                    style="min-width: 200px"
-                  >
-                    <strong>{{ vac.name }}</strong>
-                    <small class="text-muted">Data: {{ vac.dateGiven }}</small>
+                <!-- Lista de vacinas so visivel se nao estiver em modo edicao -->
+                <div v-else v-if="!isPetDetailsEditing">
+                  <div v-if="!selectedPetVaccines.length" class="text-muted">
+                    Nenhuma vacina encontrada.
                   </div>
+                  <ul v-else class="list-unstyled">
+                    <li
+                      v-for="vac in selectedPetVaccines"
+                      :key="vac.id"
+                      class="mb-2"
+                    >
+                      <strong>{{ vac.name }}</strong> -
+                      <small class="text-muted"
+                        >Data: {{ vac.dateGiven }}</small
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <!-- Se estiver em modo edição, não mostra as vacinas -->
+                <div v-else class="text-muted">
+                  Vacinas indisponíveis no modo edição.
                 </div>
               </div>
             </div>
@@ -750,7 +760,7 @@ onMounted(() => {
           <div class="d-flex justify-content-end gap-2 mt-3">
             <button
               type="button"
-              class="rounded-5 border-0 shadow text-white bg-primary p-2"
+              class="rounded-5 border-0 shadow text-white bg-secondary p-2"
               @click="showModal = false"
             >
               Cancelar
