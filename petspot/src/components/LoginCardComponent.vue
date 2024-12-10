@@ -1,28 +1,51 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { login } from "../scripts/ts/utils/authUtils";
 
 const email = ref("");
 const password = ref("");
-const errorMessage = ref("");
+const errorMessage = ref<string[]>([]);
 
-const handleLogin = async () => {
-  errorMessage.value = "";
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const isFormValid = computed(() => {
+  // Limpa o array antes de revalidar
+  errorMessage.value = [];
 
   if (!email.value || !password.value) {
-    errorMessage.value = "Preencha todos os campos.";
+    errorMessage.value.push("Preencha todos os campos.");
+  } else {
+    if (!emailRegex.test(email.value)) {
+      errorMessage.value.push("O email fornecido é inválido.");
+    }
+  }
+
+  return errorMessage.value.length === 0;
+});
+
+// Observa as mudanças dos campos para atualizar as mensagens de erro em tempo real
+watch([email, password], () => {
+  // O computed isFormValid já atualiza errorMessage
+  // Chamamos aqui apenas para recalcular as mensagens
+  isFormValid.value;
+});
+
+const handleLogin = async () => {
+  errorMessage.value = [];
+
+  // Verifica novamente as validações antes de enviar
+  if (!isFormValid.value) {
+    // Se não é válido, não tenta logar, pois errorMessage já está preenchido
     return;
   }
 
   const payload = { email: email.value, password: password.value };
-
   const isLoggedIn = await login(payload);
 
   if (isLoggedIn) {
-    // Redirecionar para a página principal ou dashboard
-    window.location.href = "/";
+    window.location.href = "/home";
   } else {
-    errorMessage.value = "Credenciais inválidas. Tente novamente.";
+    errorMessage.value.push("Credenciais inválidas. Tente novamente.");
   }
 };
 </script>
@@ -44,7 +67,11 @@ const handleLogin = async () => {
         class="col-md-8 col-12 d-flex justify-content-center align-items-center"
       >
         <div class="col-md-6 col-11 rounded rounded-5 shadow p-md-4 p-4">
-          <form class="row g-4 justify-content-start" id="login-form">
+          <form
+            class="row g-4 justify-content-start"
+            id="login-form"
+            @submit.prevent="handleLogin"
+          >
             <h1>Conectar-se</h1>
             <div class="col-md-12">
               <label
@@ -60,6 +87,7 @@ const handleLogin = async () => {
                 class="form-control"
                 id="email"
                 placeholder="anrrypetrin@petspot.com"
+                v-model="email"
               />
             </div>
             <div class="col-md-12">
@@ -76,6 +104,7 @@ const handleLogin = async () => {
                 class="form-control"
                 id="senha"
                 placeholder="*********"
+                v-model="password"
               />
             </div>
             <div class="col-md-12">
@@ -111,6 +140,17 @@ const handleLogin = async () => {
                 Entrar<ion-icon name="enter" class="logincard-icon"></ion-icon>
               </button>
             </div>
+            <!-- Exibição dos erros -->
+            <div
+              v-if="errorMessage.length"
+              class="text-danger text-center mt-3"
+            >
+              <ul class="text-start">
+                <li v-for="(error, index) in errorMessage" :key="index">
+                  {{ error }}
+                </li>
+              </ul>
+            </div>
           </form>
         </div>
       </div>
@@ -119,21 +159,16 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
-/* Estilo padrão do botão */
 .logincard-link {
   font-size: 1.1rem;
   transition: transform 0.3s ease;
 }
-
 .logincard-icon {
   font-size: 1.5rem;
 }
-
 .logincard-label-icon {
   font-size: 1.25rem;
 }
-
-/* Aumenta o botão em 5% no hover */
 .logincard-link:hover {
   transform: scale(1.05);
 }

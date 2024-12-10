@@ -3,6 +3,7 @@ import LandingPage from "../pages/LandingPage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import { isAuthenticated } from "../scripts/ts/utils/authUtils.ts"; // Importando do utilitário
+import HomePage from "../pages/HomePage.vue";
 
 /**
  * Proteção para rotas autenticadas
@@ -43,6 +44,12 @@ const routes = [
     name: "register-page",
     component: RegisterPage,
     beforeEnter: noAuthGuard,
+  },
+  {
+    path: "/home",
+    name: "home-page",
+    component: HomePage,
+    //beforeEnter: authGuard,
   },
 ];
 

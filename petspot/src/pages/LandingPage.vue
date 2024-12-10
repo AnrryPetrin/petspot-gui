@@ -38,7 +38,7 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
           class="col-12 col-md-12 col-lg-12 col-xl-6 d-flex justify-content-center align-items-center"
         >
           <div
-            class="d-flex d-md-none card bg-primary p-4 rounded-circle shadow border-2 border-light w-75 h-75"
+            class="d-flex d-md-none card bg-primary p-4 rounded-circle shadow border-2 border-light"
           >
             <img
               src="../assets/images/Cachorro-PNG-1.png"
@@ -47,12 +47,13 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
             />
           </div>
           <div
-            class="d-none d-md-flex card bg-primary p-4 rounded-circle shadow border-2 border-light w-75 h-75"
+            class="d-none d-md-flex card bg-primary p-4 rounded-circle shadow border-2 border-light"
           >
             <img
+              id="pet-image"
               src="../assets/images/Cachorro-PNG-1.png"
               alt="Cachorro feliz"
-              class="img-fluid rounded-circle"
+              class="rounded-circle"
             />
           </div>
         </div>
@@ -286,6 +287,10 @@ import HeaderComponent from "../layouts/HeaderComponent.vue";
 </template>
 
 <style scoped>
+#pet-image {
+  height: 30rem !important;
+  width: auto;
+}
 #presentation-card {
   background-image: url("../assets/images/svg/background-presetation-card.svg");
   background-size: contain;

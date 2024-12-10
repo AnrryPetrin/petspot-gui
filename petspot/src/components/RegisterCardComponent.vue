@@ -20,34 +20,51 @@ const errorMessage = ref<string[]>([]); // Array para múltiplas mensagens de er
 const successMessage = ref("");
 
 // Regex e validações
+// Mantemos as regex originais mas não usaremos mais as do telefone, apenas comentaremos.
+// const phoneRegex = {
+//   "+55": /^[1-9]{2}9?\d{8}$/,
+//   "+1": /^\d{10}$/,
+//   "+44": /^\d{10}$/,
+// };
 const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/;
 const usernameRegex = /^[a-zA-Z0-9_.]{3,25}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegex = {
-  "+55": /^[1-9]{2}9?\d{8}$/,
-  "+1": /^\d{10}$/,
-  "+44": /^\d{10}$/,
-};
 
 // Função para formatar o telefone no formato "+55 (XX) XXXXX-XXXX"
 const formatPhoneNumber = (countryCode: string, phone: string): string => {
   if (countryCode === "+55" && phone.length >= 10) {
     const ddd = phone.slice(0, 2);
-    const firstPart = phone.slice(2, 7);
-    const secondPart = phone.slice(7);
-    return `${countryCode} (${ddd}) ${firstPart}-${secondPart}`;
+    const resto = phone.slice(2);
+    let formatted = `${countryCode} (${ddd}) `;
+    if (resto.length > 5) {
+      const firstPart = resto.slice(0, resto.length === 9 ? 5 : 4);
+      const secondPart = resto.slice(resto.length === 9 ? 5 : 4);
+      formatted += `${firstPart}-${secondPart}`;
+    } else {
+      formatted += resto;
+    }
+    return formatted;
   }
   return `${countryCode} ${phone}`;
 };
 
 // Validação da força da senha
+// A senha deve ter de 8 a 20 caracteres, já limitado no input.
+// Deve ter caracteres especiais, mas '*' não conta como especial no momento.
+// Manteremos o comentário a respeito da remoção do '*'.
 const passwordStrength = computed(() => {
+  const pass = password.value;
+
   const checks = {
-    length: password.value.length >= 8 ? 1 : 0,
-    uppercase: /[A-Z]/.test(password.value) ? 1 : 0,
-    lowercase: /[a-z]/.test(password.value) ? 1 : 0,
-    number: /\d/.test(password.value) ? 1 : 0,
-    specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password.value) ? 1 : 0,
+    length: pass.length >= 8 && pass.length <= 20 ? 1 : 0,
+    uppercase: /[A-Z]/.test(pass) ? 1 : 0,
+    lowercase: /[a-z]/.test(pass) ? 1 : 0,
+    number: /\d/.test(pass) ? 1 : 0,
+    // Removemos o '*' do conjunto de caracteres especiais:
+    // Antes: /[!@#$%^&*(),.?":{}|<>]/
+    // Agora, sem '*': /[!@#$%^&(),.?":{}|<>]/
+    // * removido conforme solicitado. Deixando isso comentado.
+    specialChar: /[!@#$%^&(),.?":{}|<>]/.test(pass) ? 1 : 0,
   };
 
   const score =
@@ -72,14 +89,24 @@ const passwordStrengthClass = computed(() => {
 });
 
 // Validações dinâmicas
+// Telefone deve ter de 10 a 11 caracteres numéricos, independente do país.
+// Antes utilizávamos regex, agora apenas checaremos o length.
+// Com isso, o telefone deve conter apenas dígitos. Caso o usuário digite outros caracteres,
+// pode-se removê-los antes da validação final. Manteremos simples aqui.
 const isPhoneValid = computed(() => {
-  const regex = phoneRegex[countryCode.value as keyof typeof phoneRegex];
-  return regex ? regex.test(phone.value) : false;
+  const cleanPhone = phone.value.replace(/\D/g, "");
+  return cleanPhone.length >= 10 && cleanPhone.length <= 11;
 });
 
 const arePasswordsMatching = computed(
   () => password.value === confirmPassword.value
 );
+
+const isAdultEnough = computed(() => {
+  const birth = new Date(birthDate.value);
+  const age = new Date().getFullYear() - birth.getFullYear();
+  return age >= 13;
+});
 
 const isFormValid = computed(() => {
   return (
@@ -87,9 +114,9 @@ const isFormValid = computed(() => {
     nameRegex.test(surname.value) &&
     emailRegex.test(email.value) &&
     usernameRegex.test(username.value) &&
-    passwordStrength.value.score >= 4 &&
+    passwordStrength.value.score >= 5 && // Garantindo que a senha seja forte
     arePasswordsMatching.value &&
-    new Date().getFullYear() - new Date(birthDate.value).getFullYear() >= 13 &&
+    isAdultEnough.value &&
     isPhoneValid.value &&
     agreeTerms.value
   );
@@ -119,21 +146,20 @@ watch(
       errorMessage.value.push("O email fornecido é inválido.");
     if (username.value && !usernameRegex.test(username.value))
       errorMessage.value.push(
-        "O nome de usuário deve ter entre 3 e 25 caracteres."
+        "O nome de usuário deve ter entre 3 e 25 caracteres e caracteres permitidos (letras, números, ponto e sublinhado)."
       );
     if (password.value && passwordStrength.value.score < 5)
       errorMessage.value.push(
-        "A senha deve ser forte, com no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e caracteres especiais."
+        "A senha deve ser forte, com no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais (exceto '*')."
       );
     if (confirmPassword.value && !arePasswordsMatching.value)
       errorMessage.value.push("As senhas não coincidem.");
-    if (
-      birthDate.value &&
-      new Date().getFullYear() - new Date(birthDate.value).getFullYear() < 13
-    )
+    if (birthDate.value && !isAdultEnough.value)
       errorMessage.value.push("Você deve ter no mínimo 13 anos.");
     if (phone.value && !isPhoneValid.value)
-      errorMessage.value.push("O telefone informado é inválido.");
+      errorMessage.value.push(
+        "O telefone informado é inválido (deve ter entre 10 e 11 dígitos numéricos)."
+      );
     if (!agreeTerms.value)
       errorMessage.value.push("Você deve concordar com os Termos de Uso.");
   }
@@ -149,10 +175,8 @@ const handleRegister = async () => {
     return;
   }
 
-  const formattedPhone = formatPhoneNumber(
-    countryCode.value,
-    phone.value.replace(/\D/g, "")
-  );
+  const cleanPhone = phone.value.replace(/\D/g, "");
+  const formattedPhone = formatPhoneNumber(countryCode.value, cleanPhone);
 
   const payload = {
     name: `${name.value} ${surname.value}`,
@@ -181,12 +205,12 @@ const handleRegister = async () => {
           class="d-flex justify-content-center align-items-center w-75"
         />
       </div>
-      <div class="col rounded rounded-5 shadow px-4 py-2">
+      <div class="col rounded rounded-5 shadow p-4">
         <form
           class="row justify-content-center justify-content-md-start g-3"
           @submit.prevent="handleRegister"
         >
-          <div class="col-md-12 col-9 py-4 py-md-0">
+          <div class="col-md-12 col-9 pb-4 pb-md-0 m-0P">
             <h1 class="text-md-start text-center">Cadastre-se</h1>
           </div>
           <!-- Nome -->
@@ -301,14 +325,14 @@ const handleRegister = async () => {
               type="tel"
               class="form-control"
               id="telefone"
-              minlength="11"
-              maxlength="12"
+              minlength="10"
+              maxlength="11"
               placeholder="(12) 34567-8910"
               v-model="phone"
             />
           </div>
           <!-- Checkbox Newsletter -->
-          <div class="col-md-8 col-9 py-4">
+          <div class="col-md-8 col-9 pt-4">
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -337,7 +361,7 @@ const handleRegister = async () => {
           </div>
           <!-- Botão -->
           <div
-            class="col-md-4 col-9 py-4 d-flex justify-content-md-end justify-content-center align-items-end"
+            class="col-md-4 col-9 pt-4 d-flex justify-content-md-end justify-content-center align-items-end"
           >
             <button
               type="submit"
