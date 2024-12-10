@@ -30,7 +30,7 @@ const pets = ref<Pet[]>([]);
 const isEditing = ref(false);
 const showModal = ref(false);
 
-// Dados para cadastro
+// Dados para cadastro de novo Pet
 const newPetName = ref("");
 const newPetSpecies = ref("");
 const newPetBreed = ref("");
@@ -51,7 +51,20 @@ const selectedPetVaccines = ref<Vaccine[]>([]);
 const loadingVaccines = ref(false);
 const vaccinesError = ref<string>("");
 
-// Listas pré-definidas de espécies, raças e cores (para cadastro)
+// Edição de dados do pet no modal de detalhes
+const isPetDetailsEditing = ref(false);
+
+// Dados para edição do pet selecionado
+const editPetName = ref("");
+const editPetSpecies = ref("");
+const editPetBreed = ref("");
+const editPetWeight = ref<number | null>(null);
+const editPetDateOfBirth = ref("");
+const editPetGender = ref("");
+const editPetIsNeutered = ref(false);
+const editPetColor = ref("");
+
+// Listas pré-definidas de espécies, raças e cores
 const speciesOptions = [
   { value: "DOG", label: "Cachorro" },
   { value: "CAT", label: "Gato" },
@@ -87,7 +100,7 @@ const neuteredOptions = [
 // Simulando owner fixo
 const ownerId = 1;
 
-// Computed para validação
+// Computed para validação do cadastro
 const isFormValid = computed(() => {
   errorMessage.value = [];
   if (!newPetName.value.trim())
@@ -104,7 +117,7 @@ const isFormValid = computed(() => {
   return errorMessage.value.length === 0;
 });
 
-// Observa mudanças de espécie para atualizar raças e cores
+// Observa mudanças de espécie para atualizar raças e cores do cadastro
 watch(newPetSpecies, (val) => {
   const upperVal = val.trim().toUpperCase();
   breedOptions.value = breedsBySpecies[upperVal] || [];
@@ -112,6 +125,25 @@ watch(newPetSpecies, (val) => {
 
   newPetBreed.value = "";
   newPetColor.value = "";
+});
+
+// Função para atualizar as opções de raça e cor no modo de edição do pet no modal
+function updateEditOptions() {
+  const upperVal = editPetSpecies.value.trim().toUpperCase();
+  breedOptions.value = breedsBySpecies[upperVal] || [];
+  colorOptions.value = colorsBySpecies[upperVal] || [];
+
+  // Se a raça ou cor atual não existir mais nas opções, limpa
+  if (!breedOptions.value.includes(editPetBreed.value)) {
+    editPetBreed.value = "";
+  }
+  if (!colorOptions.value.includes(editPetColor.value)) {
+    editPetColor.value = "";
+  }
+}
+
+watch(editPetSpecies, () => {
+  updateEditOptions();
 });
 
 // Funções CRUD
@@ -193,13 +225,82 @@ async function deletePet(id: number) {
   }
 }
 
+// Função para atualizar o pet após edição
+async function updatePet() {
+  if (!selectedPet.value?.id) return;
+
+  // Validação simples da edição
+  const editErrors: string[] = [];
+  if (!editPetName.value.trim())
+    editErrors.push("O nome do Pet é obrigatório.");
+  if (!editPetSpecies.value.trim())
+    editErrors.push("A espécie do Pet é obrigatória.");
+  if (!editPetBreed.value.trim())
+    editErrors.push("A raça do Pet é obrigatória.");
+  if (editPetWeight.value === null || editPetWeight.value <= 0)
+    editErrors.push("O peso do Pet deve ser um número positivo.");
+  if (!editPetGender.value.trim())
+    editErrors.push("O gênero do Pet é obrigatório.");
+
+  if (editErrors.length > 0) {
+    errorMessage.value = editErrors;
+    return;
+  } else {
+    errorMessage.value = [];
+  }
+
+  const payload: Pet = {
+    name: editPetName.value.trim(),
+    species: editPetSpecies.value.trim().toUpperCase(),
+    breed: editPetBreed.value.trim(),
+    weight: editPetWeight.value ?? 0,
+    dateOfBirth: editPetDateOfBirth.value || undefined,
+    gender: editPetGender.value.trim().toUpperCase(),
+    isNeutered: editPetIsNeutered.value,
+    color: editPetColor.value || undefined,
+    owner: {
+      id: ownerId,
+    },
+  };
+
+  try {
+    const response = await fetch(
+      `${__API_BASE_URL__}/api/pets/${selectedPet.value.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+    if (response.ok) {
+      const updatedPet = await response.json();
+      // Atualiza a lista de pets
+      const index = pets.value.findIndex((p) => p.id === selectedPet.value?.id);
+      if (index !== -1) {
+        pets.value[index] = updatedPet;
+      }
+      // Atualiza o selectedPet
+      selectedPet.value = updatedPet;
+      successMessage.value = "Pet atualizado com sucesso!";
+      // Sai do modo edição após um delay
+      setTimeout(() => {
+        isPetDetailsEditing.value = false;
+        successMessage.value = "";
+      }, 1500);
+    } else {
+      errorMessage.value = ["Erro ao atualizar o Pet. Verifique os dados."];
+    }
+  } catch (err) {
+    errorMessage.value = ["Erro de conexão ao atualizar o Pet."];
+  }
+}
+
 // Vacinas do Pet
 async function fetchPetVaccines(petId: number) {
   vaccinesError.value = "";
   loadingVaccines.value = true;
   selectedPetVaccines.value = [];
   try {
-    // Supondo que /api/pets/{id}/vaccines seja o endpoint para vacinas
     const response = await fetch(
       `${__API_BASE_URL__}/api/pets/${petId}/vaccines`
     );
@@ -217,17 +318,41 @@ async function fetchPetVaccines(petId: number) {
 }
 
 function openPetDetails(pet: Pet) {
-  // Só abre se não estiver em modo edição, pois no modo edição clicamos no card apenas para deletar
   if (!isEditing.value) {
     selectedPet.value = pet;
     showDetailsModal.value = true;
+    loadPetEditData(pet);
     if (pet.id) fetchPetVaccines(pet.id);
   }
+}
+
+// Carrega dados do pet selecionado para edição
+function loadPetEditData(pet: Pet) {
+  editPetName.value = pet.name;
+  editPetSpecies.value = pet.species;
+  editPetBreed.value = pet.breed;
+  editPetWeight.value = pet.weight;
+  editPetDateOfBirth.value = pet.dateOfBirth || "";
+  editPetGender.value = pet.gender;
+  editPetIsNeutered.value = pet.isNeutered;
+  editPetColor.value = pet.color || "";
+
+  updateEditOptions();
 }
 
 function toggleEdit() {
   isEditing.value = !isEditing.value;
 }
+
+function toggleDetailsEdit() {
+  isPetDetailsEditing.value = !isPetDetailsEditing.value;
+  if (!isPetDetailsEditing.value && selectedPet.value) {
+    // Se saiu do modo edição sem salvar, restaura dados originais
+    loadPetEditData(selectedPet.value);
+    errorMessage.value = [];
+  }
+}
+
 onMounted(() => {
   fetchPets();
 });
@@ -328,27 +453,152 @@ onMounted(() => {
             Fechar
           </button>
         </div>
+        <!-- Botão para entrar/sair do modo edição -->
+        <div class="d-flex justify-content-end gap-2 mb-3">
+          <button
+            class="btn btn-secondary rounded-pill"
+            v-if="isPetDetailsEditing"
+            @click="toggleDetailsEdit"
+          >
+            Cancelar
+          </button>
+          <button
+            class="btn btn-primary rounded-pill"
+            @click="isPetDetailsEditing ? updatePet() : toggleDetailsEdit()"
+          >
+            {{ isPetDetailsEditing ? "Salvar" : "Editar" }}
+          </button>
+        </div>
+
         <div class="row">
           <div class="col-12 col-md-6">
-            <!-- Card expandido -->
+            <!-- Card expandido - se estiver editando, mostra inputs -->
             <div class="card rounded-5 border-0 shadow bg-light p-3">
-              <h5 class="card-title pet-name mb-3">{{ selectedPet?.name }}</h5>
-              <p class="card-text pet-info mb-0">
-                <strong>Espécie:</strong> {{ selectedPet?.species }}<br />
-                <strong>Raça:</strong> {{ selectedPet?.breed }}<br />
-                <strong>Peso:</strong> {{ selectedPet?.weight }} kg<br />
-                <strong>Gênero:</strong> {{ selectedPet?.gender }}<br />
-                <strong>Neutrado:</strong>
-                {{ selectedPet?.isNeutered ? "Sim" : "Não" }}<br />
-                <span v-if="selectedPet?.dateOfBirth"
-                  ><strong>Nasc:</strong> {{ selectedPet?.dateOfBirth }}</span
-                ><br />
-                <span v-if="selectedPet?.color"
-                  ><strong>Cor:</strong> {{ selectedPet?.color }}</span
-                >
-              </p>
+              <template v-if="!isPetDetailsEditing">
+                <h5 class="card-title pet-name mb-3">
+                  {{ selectedPet?.name }}
+                </h5>
+                <p class="card-text pet-info mb-0">
+                  <strong>Espécie:</strong> {{ selectedPet?.species }}<br />
+                  <strong>Raça:</strong> {{ selectedPet?.breed }}<br />
+                  <strong>Peso:</strong> {{ selectedPet?.weight }} kg<br />
+                  <strong>Gênero:</strong> {{ selectedPet?.gender }}<br />
+                  <strong>Neutrado:</strong>
+                  {{ selectedPet?.isNeutered ? "Sim" : "Não" }}<br />
+                  <span v-if="selectedPet?.dateOfBirth"
+                    ><strong>Nasc:</strong> {{ selectedPet?.dateOfBirth }}</span
+                  ><br />
+                  <span v-if="selectedPet?.color"
+                    ><strong>Cor:</strong> {{ selectedPet?.color }}</span
+                  >
+                </p>
+              </template>
+              <template v-else>
+                <div class="mb-3">
+                  <label class="form-label">Nome</label>
+                  <input
+                    v-model="editPetName"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Espécie</label>
+                  <select v-model="editPetSpecies" class="form-select">
+                    <option value="">Selecione uma espécie</option>
+                    <option
+                      v-for="(spec, index) in speciesOptions"
+                      :key="index"
+                      :value="spec.value"
+                    >
+                      {{ spec.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Raça</label>
+                  <select v-model="editPetBreed" class="form-select">
+                    <option value="">Selecione a raça</option>
+                    <option
+                      v-for="(breed, index) in breedOptions"
+                      :key="index"
+                      :value="breed"
+                    >
+                      {{ breed }}
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Peso (kg)</label>
+                  <input
+                    v-model.number="editPetWeight"
+                    type="number"
+                    class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"
+                    >Data de Nascimento (opcional)</label
+                  >
+                  <input
+                    v-model="editPetDateOfBirth"
+                    type="date"
+                    class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Gênero</label>
+                  <select v-model="editPetGender" class="form-select">
+                    <option value="">Selecione o gênero</option>
+                    <option
+                      v-for="(gen, index) in genderOptions"
+                      :key="index"
+                      :value="gen.value"
+                    >
+                      {{ gen.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Castrado?</label>
+                  <select v-model="editPetIsNeutered" class="form-select">
+                    <option
+                      v-for="(opt, index) in neuteredOptions"
+                      :key="index"
+                      :value="opt.value"
+                    >
+                      {{ opt.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Cor (opcional)</label>
+                  <select v-model="editPetColor" class="form-select">
+                    <option value="">Selecione a cor</option>
+                    <option
+                      v-for="(col, index) in colorOptions"
+                      :key="index"
+                      :value="col"
+                    >
+                      {{ col }}
+                    </option>
+                  </select>
+                </div>
+              </template>
+            </div>
+            <!-- Mensagens de erro/sucesso no modal de detalhes -->
+            <div v-if="errorMessage.length" class="text-danger mt-3">
+              <ul>
+                <li v-for="(err, index) in errorMessage" :key="index">
+                  {{ err }}
+                </li>
+              </ul>
+            </div>
+            <div v-if="successMessage" class="text-success mt-3">
+              {{ successMessage }}
             </div>
           </div>
+
           <div class="col-12 col-md-6 mt-3 mt-md-0">
             <!-- Lista de vacinas estilo card -->
             <h6 class="mb-3">Vacinas do Pet</h6>
