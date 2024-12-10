@@ -364,11 +364,8 @@ function toggleEdit() {
 }
 
 function toggleDetailsEdit() {
-  // Modo edição do pet dentro do modal de detalhes somente é ativado quando clica em "Editar"
-  // Se já estiver editando, ao clicar novamente salvamos, se não, apenas entramos no modo edição.
+  // Se já estiver editando, este botão salva as alterações
   if (isPetDetailsEditing.value) {
-    // Aqui, quando está editando e clica no botão (que mostra "Salvar"),
-    // Chamamos updatePet() para salvar as alterações.
     updatePet();
   } else {
     // Entrar no modo edição
@@ -377,13 +374,13 @@ function toggleDetailsEdit() {
 }
 
 function cancelDetailsEdit() {
-  // Ao cancelar edição, restaurar os dados originais do pet
   if (selectedPet.value) {
     loadPetEditData(selectedPet.value);
   }
   isPetDetailsEditing.value = false;
   errorMessage.value = [];
 }
+
 onMounted(() => {
   fetchPets();
 });
@@ -644,8 +641,11 @@ onMounted(() => {
                 <div v-else-if="vaccinesError">
                   <p class="text-danger">{{ vaccinesError }}</p>
                 </div>
-                <!-- Lista de vacinas so visivel se nao estiver em modo edicao -->
-                <div v-else v-if="!isPetDetailsEditing">
+                <!-- Ajuste da lógica para não mostrar mensagem de indisponibilidade caso não esteja no modo edição -->
+                <div v-else-if="isPetDetailsEditing" class="text-muted">
+                  Vacinas indisponíveis no modo edição.
+                </div>
+                <div v-else>
                   <div v-if="!selectedPetVaccines.length" class="text-muted">
                     Nenhuma vacina encontrada.
                   </div>
@@ -661,10 +661,6 @@ onMounted(() => {
                       >
                     </li>
                   </ul>
-                </div>
-                <!-- Se estiver em modo edição, não mostra as vacinas -->
-                <div v-else class="text-muted">
-                  Vacinas indisponíveis no modo edição.
                 </div>
               </div>
             </div>
