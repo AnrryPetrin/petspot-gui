@@ -6,17 +6,6 @@ import { isAuthenticated } from "../scripts/ts/utils/authUtils.ts"; // Importand
 import HomePage from "../pages/HomePage.vue";
 
 /**
- * Proteção para rotas autenticadas
- */
-const authGuard = (_to: any, _from: any, next: any) => {
-  if (isAuthenticated()) {
-    next();
-  } else {
-    next("/sign-in"); // Redireciona para a página de login se não autenticado
-  }
-};
-
-/**
  * Proteção para rotas não autenticadas
  */
 const noAuthGuard = (_to: any, _from: any, next: any) => {

@@ -30,24 +30,6 @@ watch([email, password], () => {
   isFormValid.value;
 });
 
-const handleLogin = async () => {
-  errorMessage.value = [];
-
-  // Verifica novamente as validações antes de enviar
-  if (!isFormValid.value) {
-    // Se não é válido, não tenta logar, pois errorMessage já está preenchido
-    return;
-  }
-
-  const payload = { email: email.value, password: password.value };
-  const isLoggedIn = await login(payload);
-
-  if (isLoggedIn) {
-    window.location.href = "/home";
-  } else {
-    errorMessage.value.push("Credenciais inválidas. Tente novamente.");
-  }
-};
 </script>
 
 <template>
@@ -70,7 +52,6 @@ const handleLogin = async () => {
           <form
             class="row g-4 justify-content-start"
             id="login-form"
-            @submit.prevent="handleLogin"
           >
             <h1>Conectar-se</h1>
             <div class="col-md-12">
