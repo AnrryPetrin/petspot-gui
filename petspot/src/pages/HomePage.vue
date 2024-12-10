@@ -64,6 +64,10 @@ const editPetGender = ref("");
 const editPetIsNeutered = ref(false);
 const editPetColor = ref("");
 
+// Modal de confirmação de exclusão
+const showDeleteConfirmModal = ref(false);
+const petToDeleteId = ref<number | null>(null);
+
 // Listas pré-definidas de espécies, raças e cores
 const speciesOptions = [
   { value: "DOG", label: "Cachorro" },
@@ -210,18 +214,31 @@ async function createPet() {
   }
 }
 
-async function deletePet(id: number) {
+async function confirmDeletePet(id: number) {
+  // Mostra modal de confirmação
+  petToDeleteId.value = id;
+  showDeleteConfirmModal.value = true;
+}
+
+async function executeDeletePet() {
+  if (!petToDeleteId.value) return;
   try {
-    const response = await fetch(`${__API_BASE_URL__}/api/pets/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `${__API_BASE_URL__}/api/pets/${petToDeleteId.value}`,
+      {
+        method: "DELETE",
+      }
+    );
     if (response.ok || response.status === 204) {
-      pets.value = pets.value.filter((p) => p.id !== id);
+      pets.value = pets.value.filter((p) => p.id !== petToDeleteId.value);
     } else {
       console.error("Erro ao deletar pet:", response.statusText);
     }
   } catch (err) {
     console.error("Erro ao deletar pet:", err);
+  } finally {
+    showDeleteConfirmModal.value = false;
+    petToDeleteId.value = null;
   }
 }
 
@@ -318,9 +335,11 @@ async function fetchPetVaccines(petId: number) {
 }
 
 function openPetDetails(pet: Pet) {
+  // Apenas visualização ao abrir o modal
   if (!isEditing.value) {
     selectedPet.value = pet;
     showDetailsModal.value = true;
+    isPetDetailsEditing.value = false; // inicia sempre em modo visualização
     loadPetEditData(pet);
     if (pet.id) fetchPetVaccines(pet.id);
   }
@@ -345,12 +364,25 @@ function toggleEdit() {
 }
 
 function toggleDetailsEdit() {
-  isPetDetailsEditing.value = !isPetDetailsEditing.value;
-  if (!isPetDetailsEditing.value && selectedPet.value) {
-    // Se saiu do modo edição sem salvar, restaura dados originais
-    loadPetEditData(selectedPet.value);
-    errorMessage.value = [];
+  // Modo edição do pet dentro do modal de detalhes somente é ativado quando clica em "Editar"
+  // Se já estiver editando, ao clicar novamente salvamos, se não, apenas entramos no modo edição.
+  if (isPetDetailsEditing.value) {
+    // Aqui, quando está editando e clica no botão (que mostra "Salvar"),
+    // Chamamos updatePet() para salvar as alterações.
+    updatePet();
+  } else {
+    // Entrar no modo edição
+    isPetDetailsEditing.value = true;
   }
+}
+
+function cancelDetailsEdit() {
+  // Ao cancelar edição, restaurar os dados originais do pet
+  if (selectedPet.value) {
+    loadPetEditData(selectedPet.value);
+  }
+  isPetDetailsEditing.value = false;
+  errorMessage.value = [];
 }
 onMounted(() => {
   fetchPets();
@@ -423,7 +455,7 @@ onMounted(() => {
           <div v-if="isEditing" class="position-absolute top-0 end-0 m-3">
             <button
               class="rounded-5 border-0 shadow text-white bg-primary btn-sm d-flex align-items-center gap-1 p-2"
-              @click.stop="deletePet(pet.id!)"
+              @click.stop="confirmDeletePet(pet.id!)"
             >
               Deletar<ion-icon name="trash"></ion-icon>
             </button>
@@ -457,13 +489,13 @@ onMounted(() => {
           <button
             v-if="isPetDetailsEditing"
             class="rounded-5 border-0 shadow text-white bg-secondary p-2"
-            @click="toggleDetailsEdit"
+            @click="cancelDetailsEdit"
           >
             Cancelar
           </button>
           <button
             class="rounded-5 border-0 shadow text-white bg-primary p-2"
-            @click="isPetDetailsEditing ? updatePet() : toggleDetailsEdit()"
+            @click="toggleDetailsEdit"
           >
             {{ isPetDetailsEditing ? "Salvar" : "Editar" }}
           </button>
@@ -773,6 +805,38 @@ onMounted(() => {
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <div
+    class="modal fade show"
+    tabindex="-1"
+    role="dialog"
+    v-if="showDeleteConfirmModal"
+    style="display: block; background: rgba(0, 0, 0, 0.5)"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 shadow p-4">
+        <h5 class="modal-title mb-3">Confirmar Exclusão</h5>
+        <p>Tem certeza que deseja deletar este pet?</p>
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button
+            type="button"
+            class="rounded-5 border-0 shadow text-white bg-secondary p-2"
+            @click="showDeleteConfirmModal = false"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="rounded-5 border-0 shadow text-white bg-primary p-2"
+            @click="executeDeletePet()"
+          >
+            Confirmar
+          </button>
+        </div>
       </div>
     </div>
   </div>
